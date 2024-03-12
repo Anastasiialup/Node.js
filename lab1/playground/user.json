@@ -1,0 +1,14 @@
+{
+  "firstName": "Anastasiia",
+  "lastName": "Lupashyna",
+  "languages": [
+    {
+      "title": "JavaScript",
+      "level": "Intermediate"
+    },
+    {
+      "title": "Python",
+      "level": "Beginner"
+    }
+  ]
+}
