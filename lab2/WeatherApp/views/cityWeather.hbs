@@ -1,8 +1,10 @@
 {{> header}}
 
 <h1>{{pageTitle}}</h1>
-<p>Description: {{weather.weather[0].description}}</p>
+
 <p>Temperature: {{weather.main.temp}}°C</p>
 <p>Pressure: {{weather.main.pressure}} hPa</p>
+<p>Humidity: {{weather.main.humidity}}%</p>
+<img src="{{weatherIcon}}" alt="Weather Icon">
 
 {{> footer}}

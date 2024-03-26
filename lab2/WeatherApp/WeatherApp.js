@@ -45,12 +45,20 @@ app.get('/weather/:city', async (req, res) => {
         const apiKey = 'be046150ebe43bc62fef219b7701e10d'; // Замініть на свій ключ
         const response = await axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${city.name},${city.countryCode}&appid=${apiKey}`);
         const weatherData = response.data;
-        res.render('cityWeather', { title: `Weather in ${city.name}`, pageTitle: `Weather in ${city.name}`, city, weather: weatherData });
+
+        // Додайте наступний рядок для виводу вмісту об'єкта у консоль сервера
+        console.log(weatherData);
+
+        // Отримаємо значок погоди
+        const weatherIcon = `https://openweathermap.org/img/w/${weatherData.weather[0].icon}.png`;
+
+        res.render('cityWeather', { title: `Weather in ${city.name}`, pageTitle: `Weather in ${city.name}`, city, weather: weatherData, weatherIcon });
     } catch (error) {
         console.error(error);
         res.status(500).send('Error fetching weather data');
     }
 });
+
 
 app.use((req, res) => {
     res.status(404).send('404 Not Found');
@@ -59,3 +67,6 @@ app.use((req, res) => {
 app.listen(port, () => {
     console.log(`Server is running at http://localhost:${port}`);
 });
+
+
+app.use(express.static('public'));
