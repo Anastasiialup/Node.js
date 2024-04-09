@@ -28,7 +28,7 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-router.post('/', async (req, res) => {
+router.post('/users', async (req, res) => {
     const { name, age, email, password } = req.body;
     const user = new User({ name, age, email, password });
 
@@ -46,19 +46,31 @@ router.post('/', async (req, res) => {
 
 
 // Оновлення інформації про користувача за ID
-router.patch('/:id', async (req, res) => {
-    const id = req.params.id;
-    const updates = req.body;
+router.patch("/users/:id", async (req, res) => {
     try {
-        const user = await User.findByIdAndUpdate(id, updates, { new: true });
+        const user = await User.findById(req.params.id);
         if (!user) {
-            return res.status(404).send("User not found");
+            res.status(404);
+            throw new Error("User not found");
         }
-        res.status(200).send(user);
+
+        // Оновлення полів користувача, якщо вони були надіслані в запиті
+        const fieldsToUpdate = ["name", "age", "email", "password"];
+        fieldsToUpdate.forEach((field) => {
+            if (req.body[field]) {
+                user[field] = req.body[field];
+            }
+        });
+
+        // Збереження оновленого користувача
+        await user.save();
+
+        res.json(user);
     } catch (error) {
-        res.status(400).send("Error updating user");
+        res.status(400).send(error.message);
     }
 });
+
 
 // Видалення користувача за ID
 router.delete('/:id', async (req, res) => {
